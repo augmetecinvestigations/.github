@@ -1,0 +1,32 @@
+name: Change Request
+description: Submit a request for a change to the software or systems.
+title: "[Change Request]: "
+labels: ["change-request"]
+body:
+  - type: markdown
+    attributes:
+      value: "## Change Request Form"
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Purpose
+      description: "What is the goal of the change? Why is it necessary?"
+      placeholder: "Explain the goal and necessity of this change."
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: "What systems, processes, or functionalities will this change affect?"
+      placeholder: "Describe the scope of the change."
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: "Justification for why this change is being proposed."
+      placeholder: "Provide a justification for the proposed change."
+    validations:
+      required: true
