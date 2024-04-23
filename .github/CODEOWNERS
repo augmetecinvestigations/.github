@@ -1,0 +1,7 @@
+# Explicitly ensure only Global Owners (a team in the augmetecinvestigations Github Organisation) can change this file. 
+# This line is technically redundant, but good to add as a reminder about the importance of this to prevent unauthorised 
+# production code changes, which could be done if the listed code owners are changed.
+/.github/CODEOWNERS @augmetecinvestigations/global-owners
+
+# Now define that the Global Owners team is the owner of all code in this repo.
+* @augmetecinvestigations/global-owners
