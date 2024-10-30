@@ -1,0 +1,52 @@
+name: Rotate Terraform Cloud API Token
+
+on:
+  schedule:
+    - cron: '0 0 */6 * *' # Every 6 days
+
+env:
+  HCP_TEAM_API_NAME: "{{ secrets.HCP_TEAM_API_NAME }}"
+  HCP_TERRAFORM__TEAM_OWNERS__API_KEY: "{{ secrets.HCP_TERRAFORM__TEAM_OWNERS__API_KEY }}"
+
+jobs:
+  rotate-token:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate New API Token
+        run: |
+          # Calculate the expiry date as 7 days from now
+          EXPIRED_AT=$(date -d "+7 days" -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          # Attempt to create a new Terraform Cloud API token with the calculated expiration date
+          RESPONSE=$(curl -s -w "%{http_code}" -X POST "https://app.terraform.io/api/v2/$HCP_TEAM_API_NAME/:team_id/authentication-token" \
+            -H "Authorization: Bearer $HCP_TERRAFORM__TEAM_OWNERS__API_KEY" \
+            -H "Content-Type: application/vnd.api+json" \
+            -d '{
+              "data": {
+                "type": "authentication-token",
+                "attributes": {
+                  "expired-at": "'"${EXPIRED_AT}"'"
+                }
+              }
+            }')
+
+            # Separate the HTTP response body and status code
+            HTTP_BODY=$(echo "$RESPONSE" | sed '$d')
+            HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
+
+            # Check if the HTTP status indicates success or a 401/403 error
+            if [[ "$HTTP_STATUS" == "401" || "$HTTP_STATUS" == "403" ]]; then
+              echo "Error: Failed to authenticate with Terraform Cloud API."
+              echo "The GitHub Actions organization secret 'HCP_TERRAFORM__TEAM_OWNERS__API_KEY' may be out of sync with the actual Terraform Cloud Team API key."
+              echo "To resolve this issue, update the 'HCP_TERRAFORM__TEAM_OWNERS__API_KEY' organization secret in GitHub with a valid API key from Terraform Cloud."
+              exit 1
+            elif [[ "$HTTP_STATUS" -ne 200 && "$HTTP_STATUS" -ne 201 ]]; then
+              echo "Error: Unexpected HTTP status code $HTTP_STATUS received."
+              exit 1
+            fi
+
+            NEW_TOKEN=$(echo "$HTTP_BODY" | jq -r '.data.attributes.token')
+            echo "New token generated successfully, updating GitHub Secret..."
+
+          # Update the GitHub organization secret with the new token
+          echo "$NEW_TOKEN" | gh secret set HCP_TERRAFORM__TEAM_OWNERS__API_KEY --org --body -
