@@ -3,9 +3,10 @@
 Repos:
 - [Backend](https://github.com/augmetecinvestigations/leiaa-be)
 - [Frontend](https://github.com/augmetecinvestigations/leiaa-fe)
-- [CaseGraph](https://github.com/augmetecinvestigations/casegraph)
-- [Interview Service](https://github.com/augmetecinvestigations/leiaa-interview-service)
 - [Infrastructure](https://github.com/augmetecinvestigations/leiaa-infrastructure)
+- [Leiaa Store](https://github.com/augmetecinvestigations/leiaa-store)
+- [Leiaa Simple AI](https://github.com/augmetecinvestigations/leiaa-simple-ai)
+- [Leiaa File Service](https://github.com/augmetecinvestigations/leiaa-file-service)
 - [meta](https://github.com/augmetecinvestigations/.github)
 
 Useful links:
