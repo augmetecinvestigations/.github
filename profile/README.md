@@ -3,6 +3,7 @@
 Repos:
 - [Backend](https://github.com/augmetecinvestigations/leiaa-be)
 - [Frontend](https://github.com/augmetecinvestigations/leiaa-fe)
+- [Leiaa Permission Service](https://github.com/augmetecinvestigations/leiaa-permission-service)
 - [Infrastructure](https://github.com/augmetecinvestigations/leiaa-infrastructure)
 - [Leiaa Store](https://github.com/augmetecinvestigations/leiaa-store)
 - [Leiaa Simple AI](https://github.com/augmetecinvestigations/leiaa-simple-ai)
